@@ -64,6 +64,10 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter = adapter
 
             //버튼 이벤트 추가
+            menu.setOnClickListener {
+                val intent = Intent(this@MainActivity, MenuActivity::class.java)
+                startActivity(intent)
+            }
             day.setOnClickListener {
                 findType = 1
                 getList()
@@ -83,8 +87,6 @@ class MainActivity : AppCompatActivity() {
                 findType = 4
                 getList()
             }
-
-
         }
     }
 
