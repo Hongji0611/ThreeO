@@ -8,11 +8,11 @@ import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ColListBinding
 import com.example.threeo.databinding.RowListBinding
 
-class IfListAdapter (var items:ArrayList<String>)
+class IfListAdapter (var items:ArrayList<Int>)
     : RecyclerView.Adapter<IfListAdapter.MyViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnItemClick(holder: MyViewHolder, view: View, data: String, position: Int)
+        fun OnItemClick(holder: MyViewHolder, view: View, data: Int, position: Int)
     }
 
     var itemClickListener:OnItemClickListener?= null
@@ -35,6 +35,6 @@ class IfListAdapter (var items:ArrayList<String>)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.binding.ifBtn.text = items[position]
+        holder.binding.ifImg.setImageResource(items[position])
     }
 }

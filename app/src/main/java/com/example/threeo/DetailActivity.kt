@@ -24,7 +24,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var appIcon:Bitmap
 
     lateinit var adapter: IfListAdapter
-    var array = ArrayList<String>()
+    var array = ArrayList<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,18 +45,14 @@ class DetailActivity : AppCompatActivity() {
             totalTime.text = "${allTime.toLong()/3600000}시간 ${(allTime.toLong()%3600000)/60000}분"
 
             //list를 관리하는 메니저 등록
-            array.add("독서")
-            array.add("달리기")
-            array.add("음악")
-            array.add("알바")
-            array.add("영어단어")
-            array.add("우주선")
-            array.add("계란")
-            array.add("강의")
-            array.add("탄소배출량")
-            array.add("쓰레기")
-            array.add("바다거북이")
-            array.add("나비")
+            array.add(R.drawable.book)
+            array.add(R.drawable.run)
+            array.add(R.drawable.music)
+            array.add(R.drawable.money)
+            array.add(R.drawable.english)
+            array.add(R.drawable.rocket)
+            array.add(R.drawable.lecture)
+
             recyclerView2.layoutManager = LinearLayoutManager(this@DetailActivity, LinearLayoutManager.HORIZONTAL,false)
             adapter = IfListAdapter(array)
 
@@ -64,33 +60,30 @@ class DetailActivity : AppCompatActivity() {
                 override fun OnItemClick(
                     holder: IfListAdapter.MyViewHolder,
                     view: View,
-                    data: String,
+                    data: Int,
                     position: Int
                 ) {
                     when(adapter.items[position]){
-                        "독서"->{
+                        R.drawable.book->{
                             resultVal.text = "${500} 권"
                         }
-                        "달리기"->{
+                        R.drawable.run->{
                             resultVal.text = "${500} 칼로리"
                         }
-                        "음악"->{
+                        R.drawable.music->{
                             resultVal.text = "${500} 곡"
                         }
-                        "알바"->{
+                        R.drawable.money->{
                             resultVal.text = "${500} 원"
                         }
-                        "영어단어"->{
+                        R.drawable.english->{
                             resultVal.text = "${500} 개"
                         }
-                        "우주선"->{
+                        R.drawable.rocket->{
                             resultVal.text = "${500} 번 왕복"
                         }
-                        "계란"->{
+                        R.drawable.lecture->{
                             resultVal.text = "${500} 번 부화"
-                        }
-                        "강의"->{
-                            resultVal.text = "${500} 주차 수강"
                         }
                     }
                 }
