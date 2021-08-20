@@ -1,11 +1,14 @@
 package com.example.threeo
 
+import android.R
 import android.app.AppOpsManager
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Process
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityMainBinding
+import java.io.ByteArrayOutputStream
 import java.util.*
 
 
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: AppListAdapter
     var array = ArrayList<TimeData>()
 
+    //xml파일과 코틀린 파일을 연결
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,10 +39,11 @@ class MainActivity : AppCompatActivity() {
         init()
     }
 
+    //화면 생성시 초기화
     private fun init(){
         binding.apply {
+            //list를 관리하는 메니저 등록
             recyclerView.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL,false)
-
             adapter = AppListAdapter(array)
             adapter.itemClickListener = object :AppListAdapter.OnItemClickListener{
                 override fun OnItemClick(
@@ -49,13 +55,15 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this@MainActivity, DetailActivity::class.java)
                     intent.putExtra("totalTime", adapter.items[position].time)
                     intent.putExtra("appName", adapter.items[position].appName)
-//                    intent.putExtra("appIcon", adapter.items[position].img)
+//                    intent.putExtra("appPackageName", adapter.items[position].packageName)
                     startActivity(intent)
                 }
             }
             recyclerView.adapter = adapter
 
+            //버튼 이벤트 추가
             button.setOnClickListener { view ->
+                //스크린 타임 권한 요청
                 if(!checkForPermission()) {
                     Toast.makeText(
                         this@MainActivity, "권한 설정이 필요합니다.",
@@ -63,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                     startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                 }else{
+                    //스크린 타임 리스트 가져오기
                     adapter.clearData()
                     array.clear()
                     val usageStats = getAppUsageStats()
@@ -73,6 +82,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //패키지 명과 등등 앱 정보 가져오기
     private fun showAppUsageStats(usageStats: MutableList<UsageStats>) {
         usageStats.sortWith(Comparator { right, left ->
             compareValues(left.lastTimeUsed, right.lastTimeUsed)
@@ -90,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //앱 정보 가져올 때 주기 설정
     private fun getAppUsageStats(): MutableList<UsageStats> {
         val cal = Calendar.getInstance()
         cal.add(Calendar.YEAR, -1)
@@ -103,6 +114,7 @@ class MainActivity : AppCompatActivity() {
         return queryUsageStats
     }
 
+    //권한 확인
     private fun checkForPermission(): Boolean {
         val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)

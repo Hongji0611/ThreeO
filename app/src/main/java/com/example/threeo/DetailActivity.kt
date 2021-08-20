@@ -1,5 +1,6 @@
 package com.example.threeo
 
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.threeo.databinding.ActivityDetailBinding
@@ -9,7 +10,7 @@ class DetailActivity : AppCompatActivity() {
 
     var allTime:String = ""
     var appName:String = ""
-    var appIcon:Int = 0
+    var appIcon:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,13 +19,13 @@ class DetailActivity : AppCompatActivity() {
 
         allTime = intent.getStringExtra("totalTime").toString()
         appName = intent.getStringExtra("appName").toString()
-        appIcon = intent.getIntExtra("appIcon",0)
+//        appIcon = intent.getStringExtra("appPackageName").toString()
         init()
     }
 
     fun init(){
         binding.apply {
-            iconImg.setImageResource(appIcon)
+//            iconImg.setImageResource(appIcon)
             appTitle.text = appName
             totalTime.text = allTime
         }

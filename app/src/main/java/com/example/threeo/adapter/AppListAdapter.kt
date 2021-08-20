@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.RowListBinding
 
+//리스트를 관리하는 어뎁터
 class AppListAdapter (var items:ArrayList<TimeData>)
     : RecyclerView.Adapter<AppListAdapter.MyViewHolder>(){
 
