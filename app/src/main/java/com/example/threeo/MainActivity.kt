@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: AppListAdapter
     var array = ArrayList<TimeData>()
 
+    var findType = 0
+
     //xml파일과 코틀린 파일을 연결
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,24 +64,47 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter = adapter
 
             //버튼 이벤트 추가
-            button.setOnClickListener { view ->
-                //스크린 타임 권한 요청
-                if(!checkForPermission()) {
-                    Toast.makeText(
-                        this@MainActivity, "권한 설정이 필요합니다.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                }else{
-                    //스크린 타임 리스트 가져오기
-                    array.clear()
-                    adapter.clearData()
-                    val usageStats = getAppUsageStats()
-                    showAppUsageStats(usageStats)
-                    array.distinct()
-                    adapter.addData(array)
-                }
+            day.setOnClickListener {
+                findType = 1
+                getList()
             }
+
+            week.setOnClickListener {
+                findType = 2
+                getList()
+            }
+
+            month.setOnClickListener {
+                findType = 3
+                getList()
+            }
+
+            year.setOnClickListener {
+                findType = 4
+                getList()
+            }
+
+
+        }
+    }
+
+    private fun getList(){
+        //스크린 타임 권한 요청
+        if(!checkForPermission()) {
+            Toast.makeText(
+                this@MainActivity, "권한 설정이 필요합니다.",
+                Toast.LENGTH_LONG
+            ).show()
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        }else{
+            //스크린 타임 리스트 가져오기
+            array.clear()
+            adapter.clearData()
+            val usageStats: MutableList<UsageStats>
+            usageStats = getAppUsageStats()
+            showAppUsageStats(usageStats)
+            array.distinct()
+            adapter.addData(array)
         }
     }
 
@@ -108,12 +133,34 @@ class MainActivity : AppCompatActivity() {
         cal.add(Calendar.YEAR, -1)
 
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val queryUsageStats = usageStatsManager
-            .queryUsageStats(
-                UsageStatsManager.INTERVAL_DAILY, cal.timeInMillis,
-                System.currentTimeMillis()
-            )
-        return queryUsageStats
+        return when(findType){
+            1-> {
+                usageStatsManager
+                    .queryUsageStats(
+                        UsageStatsManager.INTERVAL_DAILY, cal.timeInMillis,
+                        System.currentTimeMillis()
+                    )
+            }
+            2-> {
+                usageStatsManager
+                    .queryUsageStats(
+                        UsageStatsManager.INTERVAL_WEEKLY, cal.timeInMillis,
+                        System.currentTimeMillis()
+                    )
+            }
+            3->{
+                usageStatsManager
+                    .queryUsageStats(
+                        UsageStatsManager.INTERVAL_MONTHLY, cal.timeInMillis,
+                        System.currentTimeMillis()
+                    )
+            }
+            else -> usageStatsManager
+                .queryUsageStats(
+                    UsageStatsManager.INTERVAL_YEARLY, cal.timeInMillis,
+                    System.currentTimeMillis()
+                )
+        }
     }
 
     //권한 확인
