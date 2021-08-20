@@ -10,29 +10,62 @@ import android.os.Bundle
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ListAdapter
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.threeo.adapter.AppListAdapter
+import com.example.threeo.data.TimeData
+import com.example.threeo.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
+
+    lateinit var adapter: AppListAdapter
+    var array = ArrayList<TimeData>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         init()
     }
 
     private fun init(){
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener { view ->
-            if(!checkForPermission()) {
-                Toast.makeText(
-                    this, "권한 설정이 필요합니다.",
-                    Toast.LENGTH_LONG
-                ).show()
-                startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-            }else{
-                val usageStats = getAppUsageStats()
-                showAppUsageStats(usageStats)
+        binding.apply {
+            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL,false)
+
+            adapter = AppListAdapter(array)
+            adapter.itemClickListener = object :AppListAdapter.OnItemClickListener{
+                override fun OnItemClick(
+                    holder: AppListAdapter.MyViewHolder,
+                    view: View,
+                    data: TimeData,
+                    position: Int
+                ) {
+                    val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                    intent.putExtra("totalTime", adapter.items[position].time)
+                    startActivity(intent)
+                }
+            }
+            recyclerView.adapter = adapter
+
+            button.setOnClickListener { view ->
+                if(!checkForPermission()) {
+                    Toast.makeText(
+                        this@MainActivity, "권한 설정이 필요합니다.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                }else{
+                    adapter.clearData()
+                    array.clear()
+                    val usageStats = getAppUsageStats()
+                    showAppUsageStats(usageStats)
+                    adapter.addData(array)
+                }
             }
         }
     }
@@ -45,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         usageStats.forEach {
             Log.e("ThreeO", "패키지명: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
                     "totalTimeInForeground: ${it.totalTimeInForeground}")
+            array.add(TimeData(R.drawable.ic_launcher_background, it.packageName, it.totalTimeInForeground.toString()))
         }
     }
 
