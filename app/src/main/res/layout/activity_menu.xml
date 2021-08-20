@@ -4,28 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MenuActivity">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        app:srcCompat="@drawable/back" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/notosanskrblack"
+        android:paddingHorizontal="10dp"
         android:text="설정"
-        android:textColor="@color/black"
+        android:textColor="@color/gray_F3"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
         android:text="개발자 정보"
-        android:textColor="@color/black" />
+        android:textColor="@color/gray_F3" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
+        android:paddingLeft="10dp"
+        android:text="FE 홍지우 / BE 강윤석"
+        android:textColor="@color/gray"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
+        android:text="디자이너 정보"
+        android:textColor="@color/gray_F3" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
+        android:paddingLeft="10dp"
+        android:text="최동우"
+        android:textColor="@color/gray"
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="설정앱 콘텐츠"
-        android:textColor="@color/black" />
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
+        android:text="버전 정보"
+        android:textColor="@color/gray_F3" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
+        android:paddingLeft="10dp"
+        android:text="v1.0.1"
+        android:textColor="@color/gray"
+        android:textSize="12dp" />
 </LinearLayout>

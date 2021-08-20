@@ -1,16 +1,30 @@
 package com.example.threeo
 
+import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.threeo.adapter.AppListAdapter
+import com.example.threeo.adapter.IfListAdapter
+import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityDetailBinding
+import java.util.ArrayList
 
 class DetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityDetailBinding
 
     var allTime:String = ""
     var appName:String = ""
-    var appIcon:String = ""
+    lateinit var appIcon:Bitmap
+
+    lateinit var adapter: IfListAdapter
+    var array = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,15 +33,69 @@ class DetailActivity : AppCompatActivity() {
 
         allTime = intent.getStringExtra("totalTime").toString()
         appName = intent.getStringExtra("appName").toString()
-//        appIcon = intent.getStringExtra("appPackageName").toString()
+//        appIcon = intent.getParcelableExtra("appBitmap")!!
         init()
     }
 
     fun init(){
         binding.apply {
-//            iconImg.setImageResource(appIcon)
+//            val drawable = BitmapDrawable(resources, appIcon)
+            iconImg.setImageResource(R.mipmap.ic_launcher_round)
             appTitle.text = appName
-            totalTime.text = allTime
+            totalTime.text = "${allTime.toLong()/3600000}시간 ${(allTime.toLong()%3600000)/60000}분"
+
+            //list를 관리하는 메니저 등록
+            array.add("독서")
+            array.add("달리기")
+            array.add("음악")
+            array.add("알바")
+            array.add("영어단어")
+            array.add("우주선")
+            array.add("계란")
+            array.add("강의")
+            array.add("탄소배출량")
+            array.add("쓰레기")
+            array.add("바다거북이")
+            array.add("나비")
+            recyclerView2.layoutManager = LinearLayoutManager(this@DetailActivity, LinearLayoutManager.HORIZONTAL,false)
+            adapter = IfListAdapter(array)
+
+            adapter.itemClickListener = object : IfListAdapter.OnItemClickListener{
+                override fun OnItemClick(
+                    holder: IfListAdapter.MyViewHolder,
+                    view: View,
+                    data: String,
+                    position: Int
+                ) {
+                    when(adapter.items[position]){
+                        "독서"->{
+                            resultVal.text = "${500} 권"
+                        }
+                        "달리기"->{
+                            resultVal.text = "${500} 칼로리"
+                        }
+                        "음악"->{
+                            resultVal.text = "${500} 곡"
+                        }
+                        "알바"->{
+                            resultVal.text = "${500} 원"
+                        }
+                        "영어단어"->{
+                            resultVal.text = "${500} 개"
+                        }
+                        "우주선"->{
+                            resultVal.text = "${500} 번 왕복"
+                        }
+                        "계란"->{
+                            resultVal.text = "${500} 번 부화"
+                        }
+                        "강의"->{
+                            resultVal.text = "${500} 주차 수강"
+                        }
+                    }
+                }
+            }
+            recyclerView2.adapter = adapter
         }
     }
 }
