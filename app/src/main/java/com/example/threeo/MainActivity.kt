@@ -72,10 +72,11 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                 }else{
                     //스크린 타임 리스트 가져오기
-                    adapter.clearData()
                     array.clear()
+                    adapter.clearData()
                     val usageStats = getAppUsageStats()
                     showAppUsageStats(usageStats)
+                    array.distinct()
                     adapter.addData(array)
                 }
             }
@@ -96,7 +97,8 @@ class MainActivity : AppCompatActivity() {
             val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
 
             val appname = p.applicationInfo.loadLabel(packageManager).toString()
-            array.add(TimeData(icon, appname, it.totalTimeInForeground.toString()))
+            if(it.totalTimeInForeground.toString() != "0")
+                array.add(TimeData(icon, appname, it.totalTimeInForeground.toString()))
         }
     }
 

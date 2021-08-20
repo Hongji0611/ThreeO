@@ -31,6 +31,7 @@ class AppListAdapter (var items:ArrayList<TimeData>)
 
     fun addData(d: ArrayList<TimeData>){
         items.addAll(d)
+        items.distinct()
         notifyDataSetChanged()
     }
 
