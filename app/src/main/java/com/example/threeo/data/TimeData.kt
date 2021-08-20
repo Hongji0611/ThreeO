@@ -1,4 +1,6 @@
 package com.example.threeo.data
 
-class TimeData(var img: Int, var appName:String, var time:String) {
+import android.graphics.drawable.Drawable
+
+class TimeData(var img: Drawable, var appName:String, var time:String) {
 }

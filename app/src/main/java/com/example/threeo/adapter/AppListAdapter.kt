@@ -43,7 +43,7 @@ class AppListAdapter (var items:ArrayList<TimeData>)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.binding.img.setImageResource(items[position].img)
+        holder.binding.img.setImageDrawable(items[position].img)
         holder.binding.appName.text = items[position].appName
         holder.binding.allTime.text = items[position].time
     }

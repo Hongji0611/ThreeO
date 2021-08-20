@@ -11,14 +11,12 @@
         android:id="@+id/img"
         android:layout_width="78dp"
         android:layout_height="49dp"
-        android:layout_weight="1"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
-        android:layout_weight="10"
         android:orientation="vertical">
 
         <TextView
@@ -39,12 +37,16 @@
             android:text="사용 시간" />
     </LinearLayout>
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <Button
         android:id="@+id/show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginRight="10dp"
         android:text="계산하기" />
 
 </LinearLayout>

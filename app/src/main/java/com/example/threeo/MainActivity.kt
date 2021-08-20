@@ -5,20 +5,21 @@ import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageInfo
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ListAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityMainBinding
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     val intent = Intent(this@MainActivity, DetailActivity::class.java)
                     intent.putExtra("totalTime", adapter.items[position].time)
+                    intent.putExtra("appName", adapter.items[position].appName)
+//                    intent.putExtra("appIcon", adapter.items[position].img)
                     startActivity(intent)
                 }
             }
@@ -78,7 +81,12 @@ class MainActivity : AppCompatActivity() {
         usageStats.forEach {
             Log.e("ThreeO", "패키지명: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
                     "totalTimeInForeground: ${it.totalTimeInForeground}")
-            array.add(TimeData(R.drawable.ic_launcher_background, it.packageName, it.totalTimeInForeground.toString()))
+
+            val icon: Drawable = this.packageManager.getApplicationIcon(it.packageName)
+            val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
+
+            val appname = p.applicationInfo.loadLabel(packageManager).toString()
+            array.add(TimeData(icon, appname, it.totalTimeInForeground.toString()))
         }
     }
 
