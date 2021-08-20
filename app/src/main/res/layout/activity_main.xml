@@ -14,13 +14,14 @@
         android:layout_width="25dp"
         android:layout_height="20dp"
         android:layout_gravity="right"
-        android:layout_margin="15dp"
+        android:layout_marginVertical="15dp"
         app:srcCompat="@drawable/menu" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/blackhansans"
         android:text="사용 기간"
         android:textColor="@color/gray"
@@ -29,6 +30,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <TextView

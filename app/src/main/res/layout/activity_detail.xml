@@ -20,6 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
@@ -42,19 +43,19 @@
                 android:id="@+id/appTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosanskr"
                 android:text="앱 이름"
-                android:textColor="@color/gray_F3"
-                android:textSize="14dp" />
+                android:textColor="@color/gray"
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/totalTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosanskr"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
                 android:text="사용 시간"
                 android:textColor="@color/gray_F3"
-                android:textSize="20dp"
+                android:textSize="28dp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
@@ -63,41 +64,46 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/blackhansans"
         android:text="어휴..."
         android:textColor="@color/gray"
-        android:textSize="40dp" />
+        android:textSize="38dp" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/blackhansans"
         android:text="이거 했을 시간에"
         android:textColor="@color/gray"
-        android:textSize="40dp" />
+        android:textSize="38dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="20dp" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:fontFamily="@font/blackhansans"
         android:text="했으면"
         android:textColor="@color/gray"
-        android:textSize="40dp" />
+        android:textSize="38dp" />
 
     <TextView
         android:id="@+id/resultVal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:fontFamily="@font/notosanskrblack"
         android:gravity="center"
         android:text="18,486원 벌었다!"
@@ -109,6 +115,7 @@
         android:id="@+id/flag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:gravity="center"
         android:text="시급 8,720기준"
         android:textColor="@color/gray"
