@@ -69,20 +69,36 @@ class MainActivity : AppCompatActivity() {
             }
             day.setOnClickListener {
                 findType = 1
+                day.setBackgroundResource(R.drawable.push_box)
+                week.setBackgroundResource(R.drawable.fill_box)
+                month.setBackgroundResource(R.drawable.fill_box)
+                year.setBackgroundResource(R.drawable.fill_box)
                 getList()
             }
 
             week.setOnClickListener {
                 findType = 2
+                day.setBackgroundResource(R.drawable.fill_box)
+                week.setBackgroundResource(R.drawable.push_box)
+                month.setBackgroundResource(R.drawable.fill_box)
+                year.setBackgroundResource(R.drawable.fill_box)
                 getList()
             }
 
             month.setOnClickListener {
+                day.setBackgroundResource(R.drawable.fill_box)
+                week.setBackgroundResource(R.drawable.fill_box)
+                month.setBackgroundResource(R.drawable.push_box)
+                year.setBackgroundResource(R.drawable.fill_box)
                 findType = 3
                 getList()
             }
 
             year.setOnClickListener {
+                day.setBackgroundResource(R.drawable.fill_box)
+                week.setBackgroundResource(R.drawable.fill_box)
+                month.setBackgroundResource(R.drawable.fill_box)
+                year.setBackgroundResource(R.drawable.push_box)
                 findType = 4
                 getList()
             }
