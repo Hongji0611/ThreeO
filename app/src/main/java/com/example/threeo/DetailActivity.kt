@@ -74,31 +74,31 @@ class DetailActivity : AppCompatActivity() {
                 ) {
                     when(adapter.items[position]){
                         R.drawable.book ->{
-                            resultVal.text = "${hour / 6} 권 읽었다!"
+                            resultVal.text = "${(hour / 6).toInt()} 권 읽었다!"
                             flag.text = "한 권당 6시간 기준"
                         }
                         R.drawable.run ->{
-                            resultVal.text = "${totalMin * 9.6} Kcal 소모했다!"
+                            resultVal.text = "${(totalMin * 9.6).toInt()} Kcal 소모했다!"
                             flag.text = "달리기 1분 9.6kcal 기준"
                         }
                         R.drawable.butterfly->{
-                            resultVal.text = "날개짓 ${totalMin / 500}번 했다!"
+                            resultVal.text = "날개짓 ${(totalMin / 500).toInt()}번 했다!"
                             flag.text = "은줄팔랑나비 1분 500회 기준"
                         }
                         R.drawable.music->{
-                            resultVal.text = "${totalMin / 3} 곡 들었다!"
+                            resultVal.text = "${(totalMin / 3).toInt()} 곡 들었다!"
                             flag.text = "1곡 3분 기준"
                         }
                         R.drawable.money->{
-                            resultVal.text = "${hour * 8720} 원 벌었다!"
+                            resultVal.text = "${(hour * 8720).toInt()} 원 벌었다!"
                             flag.text = "시급 8720원 기준"
                         }
                         R.drawable.turtle->{
-                            resultVal.text = "${hour / 35} m 헤엄쳤다!"
+                            resultVal.text = "${(hour / 35).toInt()} m 헤엄쳤다!"
                             flag.text = "바다거북 35km/h 기준"
                         }
                         R.drawable.movie->{
-                            resultVal.text = "${hour / 2} 편 봤다!"
+                            resultVal.text = "${(hour / 2).toInt()} 편 봤다!"
                             flag.text = "영화 한 편 2시간 기준"
                         }
                         R.drawable.english->{
@@ -106,19 +106,19 @@ class DetailActivity : AppCompatActivity() {
                             flag.text = "단어 1개 1분20초 기준"
                         }
                         R.drawable.fog->{
-                            resultVal.text = "탄소 ${totalMin * 3.6} g 배출했다!"
+                            resultVal.text = "탄소 ${(totalMin * 3.6).toInt()} g 배출했다!"
                             flag.text = "인터넷 접속 시 1분 3.6g 기준 "
                         }
                         R.drawable.rocket->{
-                            resultVal.text = "ISS까지 ${totalMin / 30} 번 다녀왔다!"
+                            resultVal.text = "ISS까지 ${(totalMin / 30).toInt()} 번 다녀왔다!"
                             flag.text = "왕복 30분 기준"
                         }
                         R.drawable.teacher->{
-                            resultVal.text = "2학점짜리 ${hour / 2} 주차 들었다!"
+                            resultVal.text = "2학점짜리 ${(hour / 2).toInt()} 주차 들었다!"
                             flag.text = "전공 2학점 1주 2시간 기준"
                         }
                         R.drawable.otter->{
-                            resultVal.text = "조개 ${totalMin * 0.5}개 까먹었다!"
+                            resultVal.text = "조개 ${(totalMin * 0.5).toInt()}개 까먹었다!"
                             flag.text = "해달 1분 0.5개 섭취 기준"
                         }
                     }

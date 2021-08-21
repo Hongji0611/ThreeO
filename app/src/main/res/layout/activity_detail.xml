@@ -107,7 +107,7 @@
         android:layout_marginHorizontal="4dp"
         android:fontFamily="@font/notosanskrblack"
         android:gravity="center"
-        android:text="18,486원 벌었다!"
+        android:text="0 원 벌었다!"
         android:textColor="@color/purple"
         android:textSize="34dp"
         android:textStyle="bold" />
