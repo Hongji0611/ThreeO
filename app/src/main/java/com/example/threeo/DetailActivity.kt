@@ -1,28 +1,24 @@
 package com.example.threeo
 
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.adapter.IfListAdapter
 import com.example.threeo.data.DetailData
-import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityDetailBinding
-import java.util.ArrayList
+import java.util.*
+
 
 class DetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityDetailBinding
 
     var allTime:String = ""
     var appName:String = ""
-    lateinit var appIcon:Bitmap
+    var packageStr:String = ""
+    lateinit var icon:Drawable
 
     lateinit var adapter: IfListAdapter
     var array = ArrayList<DetailData>()
@@ -34,14 +30,14 @@ class DetailActivity : AppCompatActivity() {
 
         allTime = intent.getStringExtra("totalTime").toString()
         appName = intent.getStringExtra("appName").toString()
-//        appIcon = intent.getParcelableExtra("appBitmap")!!
+        packageStr = intent.getStringExtra("packageName").toString()
+        icon = this.packageManager.getApplicationIcon(packageStr)
         init()
     }
 
     fun init(){
         binding.apply {
-//            val drawable = BitmapDrawable(resources, appIcon)
-            iconImg.setImageResource(R.mipmap.icon_round)
+            iconImg.setImageDrawable(icon)
             appTitle.text = appName
             val hour = allTime.toLong()/3600000
             val min = allTime.toLong()/60000 - hour*60

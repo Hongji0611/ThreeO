@@ -1,13 +1,11 @@
 package com.example.threeo
 
-import android.R.drawable
 import android.app.AppOpsManager
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Process
@@ -56,8 +54,7 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this@MainActivity, DetailActivity::class.java)
                     intent.putExtra("totalTime", adapter.items[position].time)
                     intent.putExtra("appName", adapter.items[position].appName)
-//                    val bitmap = (adapter.items[position].img as BitmapDrawable).bitmap
-//                    intent.putExtra("appBitmap", bitmap)
+                    intent.putExtra("packageName", adapter.items[position].packageStr)
                     startActivity(intent)
                 }
             }
@@ -140,7 +137,7 @@ class MainActivity : AppCompatActivity() {
             val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
             val appname = p.applicationInfo.loadLabel(packageManager).toString()
             if(it.totalTimeInForeground.toString() != "0")
-                array.add(TimeData(icon, appname, (it.totalTimeInForeground).toString()))
+                array.add(TimeData(icon, appname, (it.totalTimeInForeground).toString(), it.packageName))
         }
     }
 
