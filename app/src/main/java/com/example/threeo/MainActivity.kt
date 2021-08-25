@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             //버튼 이벤트 추가
             menu.setOnClickListener {
                 val intent = Intent(this@MainActivity, MenuActivity::class.java)
-                startActivity(intent)
+                startActivityForResult (intent, 100)
             }
             day.setOnClickListener {
                 findType = 1

@@ -12,6 +12,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.adapter.IfListAdapter
+import com.example.threeo.data.DetailData
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityDetailBinding
 import java.util.ArrayList
@@ -24,7 +25,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var appIcon:Bitmap
 
     lateinit var adapter: IfListAdapter
-    var array = ArrayList<Int>()
+    var array = ArrayList<DetailData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,7 @@ class DetailActivity : AppCompatActivity() {
     fun init(){
         binding.apply {
 //            val drawable = BitmapDrawable(resources, appIcon)
-            iconImg.setImageResource(R.mipmap.ic_launcher_round)
+            iconImg.setImageResource(R.mipmap.icon_round)
             appTitle.text = appName
             val hour = allTime.toLong()/3600000
             val min = allTime.toLong()/60000 - hour*60
@@ -48,18 +49,18 @@ class DetailActivity : AppCompatActivity() {
             totalTime.text = "${hour}시간 ${min}분"
 
             //list를 관리하는 메니저 등록
-            array.add(R.drawable.book)
-            array.add(R.drawable.run)
-            array.add(R.drawable.butterfly)
-            array.add(R.drawable.music)
-            array.add(R.drawable.money)
-            array.add(R.drawable.turtle)
-            array.add(R.drawable.movie)
-            array.add(R.drawable.english)
-            array.add(R.drawable.fog)
-            array.add(R.drawable.rocket)
-            array.add(R.drawable.teacher)
-            array.add(R.drawable.otter)
+            array.add(DetailData(R.drawable.book))
+            array.add(DetailData(R.drawable.run))
+            array.add(DetailData(R.drawable.butterfly))
+            array.add(DetailData(R.drawable.music))
+            array.add(DetailData(R.drawable.money))
+            array.add(DetailData(R.drawable.turtle))
+            array.add(DetailData(R.drawable.movie))
+            array.add(DetailData(R.drawable.english))
+            array.add(DetailData(R.drawable.fog))
+            array.add(DetailData(R.drawable.rocket))
+            array.add(DetailData(R.drawable.teacher))
+            array.add(DetailData(R.drawable.otter))
 
 
             recyclerView2.layoutManager = LinearLayoutManager(this@DetailActivity, LinearLayoutManager.HORIZONTAL,false)
@@ -69,10 +70,12 @@ class DetailActivity : AppCompatActivity() {
                 override fun OnItemClick(
                     holder: IfListAdapter.MyViewHolder,
                     view: View,
-                    data: Int,
+                    data: DetailData,
                     position: Int
                 ) {
-                    when(adapter.items[position]){
+                    adapter.settingPushBtn(position)
+
+                    when(adapter.items[position].img){
                         R.drawable.book ->{
                             resultVal.text = "${(hour / 6).toInt()} 권 읽었다!"
                             flag.text = "한 권당 6시간 기준"

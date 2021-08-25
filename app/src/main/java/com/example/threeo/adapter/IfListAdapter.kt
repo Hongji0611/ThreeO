@@ -4,15 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.threeo.R
+import com.example.threeo.data.DetailData
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ColListBinding
 import com.example.threeo.databinding.RowListBinding
 
-class IfListAdapter (var items:ArrayList<Int>)
+class IfListAdapter (var items:ArrayList<DetailData>)
     : RecyclerView.Adapter<IfListAdapter.MyViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnItemClick(holder: MyViewHolder, view: View, data: Int, position: Int)
+        fun OnItemClick(holder: MyViewHolder, view: View, data: DetailData, position: Int)
     }
 
     var itemClickListener:OnItemClickListener?= null
@@ -34,7 +36,19 @@ class IfListAdapter (var items:ArrayList<Int>)
         return items.size
     }
 
+    fun settingPushBtn(position: Int){
+        for(list in items){
+            list.isPush = false
+        }
+        items[position].isPush = true
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.binding.ifImg.setImageResource(items[position])
+        if(items[position].isPush)
+            holder.binding.container.setBackgroundResource(R.drawable.push_box2)
+        else
+            holder.binding.container.setBackgroundResource(R.drawable.fill_box3)
+        holder.binding.ifImg.setImageResource(items[position].img)
     }
 }
