@@ -13,7 +13,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_vertical|left"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="20dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
@@ -28,10 +28,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/notosanskr"
+            android:paddingBottom="10dp"
             android:text="앱이름"
             android:textColor="@color/gray_F3"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView

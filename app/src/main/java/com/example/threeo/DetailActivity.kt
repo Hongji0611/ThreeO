@@ -51,7 +51,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             //list를 관리하는 메니저 등록
-            array.add(DetailData(R.drawable.book))
+            array.add(DetailData(R.drawable.book, true))
             array.add(DetailData(R.drawable.run))
             array.add(DetailData(R.drawable.butterfly))
             array.add(DetailData(R.drawable.music))

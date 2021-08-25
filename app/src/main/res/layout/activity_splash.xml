@@ -40,7 +40,7 @@
         android:layout_marginTop="440dp"
         android:fontFamily="@font/notosanskr"
         android:gravity="center"
-        android:text="현실적으로 비교해보세요"
+        android:text="리얼하게 비교해보세요"
         android:textColor="@color/gray"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
