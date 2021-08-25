@@ -113,13 +113,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }else{
             //스크린 타임 리스트 가져오기
-            array.clear()
             adapter.clearData()
-            val usageStats: MutableList<UsageStats>
-            usageStats = getAppUsageStats()
+            val usageStats: MutableList<UsageStats> = getAppUsageStats()
             showAppUsageStats(usageStats)
-            array.distinct()
-            adapter.addData(array)
         }
     }
 
@@ -130,14 +126,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         usageStats.forEach {
-            Log.e("ThreeO", "패키지명: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
-                    "totalTimeInForeground: ${it.totalTimeInForeground}")
-
             val icon: Drawable = this.packageManager.getApplicationIcon(it.packageName)
             val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
             val appname = p.applicationInfo.loadLabel(packageManager).toString()
-            if(it.totalTimeInForeground.toString() != "0")
-                array.add(TimeData(icon, appname, (it.totalTimeInForeground).toString(), it.packageName))
+            if(it.totalTimeInForeground.toString() != "0"){
+                Log.e("ThreeO", "패키지명: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
+                        "totalTimeInForeground: ${it.totalTimeInForeground}")
+                adapter.addData(TimeData(icon, appname, (it.totalTimeInForeground).toString(), it.packageName))
+            }
         }
     }
 

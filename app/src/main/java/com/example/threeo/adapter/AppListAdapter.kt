@@ -27,11 +27,11 @@ class AppListAdapter (var items:ArrayList<TimeData>)
 
     fun clearData(){
         items.clear()
+        notifyDataSetChanged()
     }
 
-    fun addData(d: ArrayList<TimeData>){
-        items.addAll(d)
-        items.distinct()
+    fun addData(data: TimeData){
+        items.add(data)
         notifyDataSetChanged()
     }
 
