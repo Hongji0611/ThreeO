@@ -46,8 +46,7 @@ class DetailActivity : AppCompatActivity() {
 
             //버튼 이벤트
             backBtn.setOnClickListener {
-                val intent = Intent(this@DetailActivity, MainActivity::class.java)
-                startActivity(intent)
+                onBackPressed()
             }
 
             //list를 관리하는 메니저 등록
