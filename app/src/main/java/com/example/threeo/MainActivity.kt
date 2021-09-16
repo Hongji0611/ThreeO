@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     var array = ArrayList<TimeData>()
 
     var findType = 0
+    var calculateTime:Long = 0L
 
     //xml파일과 코틀린 파일을 연결
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     //화면 생성시 초기화
     private fun init(){
+        val idByANDROID_ID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+        Log.e("idByANDROID_ID: ", idByANDROID_ID)
+
         binding.apply {
             //list를 관리하는 메니저 등록
             recyclerView.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL,false)
@@ -100,6 +104,14 @@ class MainActivity : AppCompatActivity() {
                 findType = 4
                 getList()
             }
+
+            show.setOnClickListener {
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("totalTime", calculateTime.toString())
+                intent.putExtra("appName", "나의 총 휴대폰 사용 시간")
+                intent.putExtra("packageName", "전체시간")
+                startActivity(intent)
+            }
         }
     }
 
@@ -124,17 +136,20 @@ class MainActivity : AppCompatActivity() {
         usageStats.sortWith(Comparator { right, left ->
             compareValues(left.lastTimeUsed, right.lastTimeUsed)
         })
+        calculateTime = 0L
 
         usageStats.forEach {
             val icon: Drawable = this.packageManager.getApplicationIcon(it.packageName)
             val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
             val appname = p.applicationInfo.loadLabel(packageManager).toString()
-            if(it.totalTimeInForeground.toString() != "0"){
-                Log.e("ThreeO", "패키지명: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
+            if(it.totalTimeInForeground.toString() != "0" && icon.toString() != "android.graphics.drawable.AdaptiveIconDrawable@eedfade"){
+                Log.e("ThreeO", "패키지명: ${it.packageName}, 이미지명: $icon lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
                         "totalTimeInForeground: ${it.totalTimeInForeground}")
                 adapter.addData(TimeData(icon, appname, (it.totalTimeInForeground).toString(), it.packageName))
+                calculateTime += it.totalTimeInForeground
             }
         }
+        binding.allTime.text = "${calculateTime/3600000}시간 ${(calculateTime%3600000)/60000}분"
     }
 
     //앱 정보 가져올 때 주기 설정

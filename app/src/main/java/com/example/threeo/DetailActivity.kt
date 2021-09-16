@@ -3,6 +3,7 @@ package com.example.threeo
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,14 +32,21 @@ class DetailActivity : AppCompatActivity() {
         allTime = intent.getStringExtra("totalTime").toString()
         appName = intent.getStringExtra("appName").toString()
         packageStr = intent.getStringExtra("packageName").toString()
-        icon = this.packageManager.getApplicationIcon(packageStr)
+        if(packageStr != "전체시간")
+            icon = this.packageManager.getApplicationIcon(packageStr)
+        else
+            icon = this.packageManager.getApplicationIcon(packageName)
         init()
     }
 
     fun init(){
         binding.apply {
-            iconImg.setImageDrawable(icon)
+            if(packageStr != "전체시간")
+                iconImg.setImageDrawable(icon)
+            else
+                iconImg.setImageResource(R.drawable.photos)
             appTitle.text = appName
+
             val hour = allTime.toLong()/3600000
             val min = allTime.toLong()/60000 - hour*60
             val totalMin = (hour*60 + min);

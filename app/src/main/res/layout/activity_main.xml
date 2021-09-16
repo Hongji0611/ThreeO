@@ -17,16 +17,6 @@
         android:layout_marginVertical="15dp"
         app:srcCompat="@drawable/menu" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/blackhansans"
-        android:text="사용 기간"
-        android:textColor="@color/gray"
-        android:textSize="25dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,6 +74,83 @@
             android:text="1년"
             android:textColor="@color/white" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/allUsedTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/blackhansans"
+        android:text="휴대폰 사용시간"
+        android:textColor="@color/gray"
+        android:textSize="25dp" />
+
+    <LinearLayout
+        android:id="@+id/allUsedTimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|fill"
+        android:paddingVertical="20dp">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginRight="20dp"
+            tools:srcCompat="@drawable/photos" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/appName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="10dp"
+                android:text="휴대폰 사용시간"
+                android:textColor="@color/gray_F3"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/allTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="사용 시간"
+                android:textColor="@color/gray_F3"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/fill_box2"
+            android:gravity="center"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            android:text="계산하기"
+            android:textColor="@color/purple" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/blackhansans"
+        android:text="나의 앱사용 기간"
+        android:textColor="@color/gray"
+        android:textSize="25dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

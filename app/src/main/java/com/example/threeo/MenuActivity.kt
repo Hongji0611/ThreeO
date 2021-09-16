@@ -19,7 +19,7 @@ class MenuActivity : AppCompatActivity() {
         binding.apply {
             //버튼 이벤트
             backBtn.setOnClickListener {
-                onBackPressed()
+                 onBackPressed()
             }
         }
     }
