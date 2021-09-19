@@ -1,15 +1,27 @@
 package com.example.threeo
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threeo.adapter.IfListAdapter
 import com.example.threeo.data.DetailData
 import com.example.threeo.databinding.ActivityDetailBinding
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 
@@ -24,6 +36,10 @@ class DetailActivity : AppCompatActivity() {
     lateinit var adapter: IfListAdapter
     var array = ArrayList<DetailData>()
 
+    private val requiredPermissions = arrayOf(
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -37,6 +53,69 @@ class DetailActivity : AppCompatActivity() {
         else
             icon = this.packageManager.getApplicationIcon(packageName)
         init()
+        checkPermission()
+    }
+
+    private fun openScreenshot(imageFile: File) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        val uri: Uri = Uri.fromFile(imageFile)
+        intent.setDataAndType(uri, "image/*")
+        startActivity(intent)
+    }
+
+    private fun checkPermission() {
+        //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
+        var rejectedPermissionList = ArrayList<String>()
+
+        //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
+        for(permission in requiredPermissions){
+            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                //만약 권한이 없다면 rejectedPermissionList에 추가
+                rejectedPermissionList.add(permission)
+            }
+        }
+        //거절된 퍼미션이 있다면...
+        if(rejectedPermissionList.isNotEmpty()){
+            //권한 요청!
+            val array = arrayOfNulls<String>(rejectedPermissionList.size)
+            ActivityCompat.requestPermissions(this, rejectedPermissionList.toArray(array), 1111)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1111 -> {
+                if(grantResults.isNotEmpty()) {
+                    for((i, permission) in permissions.withIndex()) {
+                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            //권한 획득 실패
+                            Toast.makeText(this, "$permission 권한을 활성화 하셔야 합니다.", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getScreenShotFromView(v: View): Bitmap? {
+        var screenshot: Bitmap? = null
+        try {
+            if (v != null) {
+                screenshot = Bitmap.createBitmap(v.measuredWidth, v.measuredHeight, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(screenshot)
+                v.draw(canvas)
+            }
+        } catch (e: Exception) {
+            Log.e("BLABLA", "Failed to capture screenshot because:" + e.message)
+        }
+        return screenshot
     }
 
     fun init(){
@@ -55,6 +134,39 @@ class DetailActivity : AppCompatActivity() {
             //버튼 이벤트
             backBtn.setOnClickListener {
                 onBackPressed()
+            }
+
+            shareBtn.setOnClickListener {
+                binding.detailLayout.post(Runnable {
+                    val myBitmap = getScreenShotFromView(binding.detailLayout)
+                    try {
+                        if (myBitmap != null) {
+                            // 이미지를 갤러리에 저장
+                            val now = Date()
+                            DateFormat.format("yyyy-MM-dd_hh:mm:ss", now)
+                            val fileName = "screenshot$now.png"
+                            MediaStore.Images.Media.insertImage(contentResolver, myBitmap, now.toString(), fileName)
+
+                            //이미지 공유
+                            val bytes = ByteArrayOutputStream()
+                            myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                            val path: String = MediaStore.Images.Media.insertImage(
+                                contentResolver,
+                                myBitmap,
+                                "Title",
+                                null
+                            )
+                            val shareUri = Uri.parse(path)
+
+                            val sharingIntent = Intent(Intent.ACTION_SEND)
+                            sharingIntent.setType("image/*")
+                            sharingIntent.putExtra(Intent.EXTRA_STREAM, shareUri)
+                            startActivity(Intent.createChooser(sharingIntent, "Share image"))
+                        }
+                    } catch (e: java.lang.Exception) {
+                        Log.e("BLABLA", "Error ::" + e.message)
+                    }
+                })
             }
 
             //list를 관리하는 메니저 등록
