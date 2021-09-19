@@ -15,10 +15,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.threeo.`interface`.TodoApi
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityMainBinding
+import com.example.threeo.json.AppData
+import com.example.threeo.json.PostData
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     var findType = 0
     var calculateTime:Long = 0L
+    var idByANDROID_ID = ""
 
     //xml파일과 코틀린 파일을 연결
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     //화면 생성시 초기화
     private fun init(){
-        val idByANDROID_ID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+        idByANDROID_ID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
         Log.e("idByANDROID_ID: ", idByANDROID_ID)
 
         binding.apply {
@@ -76,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                 month.setBackgroundResource(R.drawable.fill_box)
                 year.setBackgroundResource(R.drawable.fill_box)
                 getList()
+                postList(findType)
             }
 
             week.setOnClickListener {
@@ -85,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 month.setBackgroundResource(R.drawable.fill_box)
                 year.setBackgroundResource(R.drawable.fill_box)
                 getList()
+                postList(findType)
             }
 
             month.setOnClickListener {
@@ -94,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                 year.setBackgroundResource(R.drawable.fill_box)
                 findType = 3
                 getList()
+                postList(findType)
             }
 
             year.setOnClickListener {
@@ -103,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                 year.setBackgroundResource(R.drawable.push_box)
                 findType = 4
                 getList()
+                postList(findType)
             }
 
             show.setOnClickListener {
@@ -113,6 +127,39 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun postList(period:Int){
+        //Retrofit 객체 생성
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://wouldhavedone-back.herokuapp.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        //retrofit 객체를 통해 인터페이스 생성
+        val service = retrofit.create(TodoApi::class.java)
+
+        //Body에 담을 데이터 생성
+        val adapter_data = adapter.getData()
+        var appList = ArrayList<AppData>()
+        for(app in adapter_data){
+            appList.add(AppData(app.appName, app.time.toLong()))
+        }
+
+        val now = Date().time
+        var body = PostData(idByANDROID_ID, period, now, appList)
+
+        service.postData(body).enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Log.d("Response:: ", response.body().toString())
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("CometChatAPI::", "Failed API call with call: " + call +
+                        " + exception: " + t)
+            }
+
+        })
     }
 
     private fun getList(){
@@ -138,15 +185,17 @@ class MainActivity : AppCompatActivity() {
         })
         calculateTime = 0L
 
+        var count = 0
         usageStats.forEach {
             val icon: Drawable = this.packageManager.getApplicationIcon(it.packageName)
             val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
             val appname = p.applicationInfo.loadLabel(packageManager).toString()
-            if(it.totalTimeInForeground.toString() != "0" && icon.toString() != "android.graphics.drawable.AdaptiveIconDrawable@eedfade"){
+            if(count <10 && it.totalTimeInForeground.toString() != "0" && icon.toString() != "android.graphics.drawable.AdaptiveIconDrawable@eedfade"){
                 Log.e("ThreeO", "패키지명: ${it.packageName}, 이미지명: $icon lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
                         "totalTimeInForeground: ${it.totalTimeInForeground}")
                 adapter.addData(TimeData(icon, appname, (it.totalTimeInForeground).toString(), it.packageName))
                 calculateTime += it.totalTimeInForeground
+                count++
             }
         }
         binding.allTime.text = "${calculateTime/3600000}시간 ${(calculateTime%3600000)/60000}분"

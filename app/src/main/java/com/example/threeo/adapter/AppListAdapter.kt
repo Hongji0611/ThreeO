@@ -35,6 +35,10 @@ class AppListAdapter (var items:ArrayList<TimeData>)
         notifyDataSetChanged()
     }
 
+    fun getData(): ArrayList<TimeData>{
+        return items
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = RowListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)
