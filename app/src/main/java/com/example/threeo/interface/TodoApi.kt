@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface TodoApi {
-    @POST("/api/timeToDo/postData")
+    @POST("/timeToDo/userLog")
     fun postData(@Body requestBody: PostData): Call<String>
 
     @GET("/api/timeToDo/otherUserData/{appName}/{period}")
