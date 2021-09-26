@@ -1,5 +1,6 @@
 package com.example.threeo.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.threeo.databinding.ActivityMenuBinding
@@ -18,6 +19,11 @@ class MenuActivity : AppCompatActivity() {
             //버튼 이벤트
             backBtn.setOnClickListener {
                  onBackPressed()
+            }
+
+            settingTerm.setOnClickListener {
+                val intent = Intent(this@MenuActivity, TermsOfUesActivity::class.java)
+                startActivity(intent)
             }
         }
     }

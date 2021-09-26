@@ -29,6 +29,15 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/setting_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr"
+        android:paddingHorizontal="10dp"
+        android:text="이용 약관"
+        android:textColor="@color/gray_F3" />
+
+    <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

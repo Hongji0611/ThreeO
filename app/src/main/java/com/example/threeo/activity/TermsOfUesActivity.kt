@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.threeo.databinding.ActivityTermsOfUesBinding
 import com.example.threeo.sharedPreferences.MyApplication
 
@@ -30,8 +31,13 @@ class TermsOfUesActivity : AppCompatActivity() {
                 }
             }
         } else {
-            val intent = Intent(this@TermsOfUesActivity, MainActivity::class.java)
-            startActivity(intent)
+            binding.apply{
+                startBtn.visibility = View.GONE
+
+                backBtn.setOnClickListener {
+                    onBackPressed()
+                }
+            }
         }
     }
 }
