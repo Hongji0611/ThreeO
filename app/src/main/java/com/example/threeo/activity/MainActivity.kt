@@ -1,4 +1,4 @@
-package com.example.threeo
+package com.example.threeo.activity
 
 import android.app.AppOpsManager
 import android.app.usage.UsageStats
@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.threeo.R
 import com.example.threeo.`interface`.TodoApi
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.data.TimeData

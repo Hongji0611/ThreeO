@@ -7,7 +7,7 @@
     android:background="@color/black"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <ImageView
         android:id="@+id/menu"

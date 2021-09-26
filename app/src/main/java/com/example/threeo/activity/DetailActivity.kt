@@ -1,4 +1,4 @@
-package com.example.threeo
+package com.example.threeo.activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.text.format.DateFormat
 import android.util.Log
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.threeo.R
 import com.example.threeo.adapter.IfListAdapter
 import com.example.threeo.data.DetailData
 import com.example.threeo.databinding.ActivityDetailBinding
@@ -205,43 +205,43 @@ class DetailActivity : AppCompatActivity() {
                             resultVal.text = "${(totalMin * 9.6).toInt()} Kcal 소모했다!"
                             flag.text = "달리기 1분 9.6kcal 기준"
                         }
-                        R.drawable.butterfly->{
+                        R.drawable.butterfly ->{
                             resultVal.text = "날개짓 ${(totalMin / 500).toInt()}번 했다!"
                             flag.text = "은줄팔랑나비 1분 500회 기준"
                         }
-                        R.drawable.music->{
+                        R.drawable.music ->{
                             resultVal.text = "${(totalMin / 3).toInt()} 곡 들었다!"
                             flag.text = "1곡 3분 기준"
                         }
-                        R.drawable.money->{
+                        R.drawable.money ->{
                             resultVal.text = "${(hour * 8720).toInt()} 원 벌었다!"
                             flag.text = "시급 8720원 기준"
                         }
-                        R.drawable.turtle->{
+                        R.drawable.turtle ->{
                             resultVal.text = "${(hour / 35).toInt()} m 헤엄쳤다!"
                             flag.text = "바다거북 35km/h 기준"
                         }
-                        R.drawable.movie->{
+                        R.drawable.movie ->{
                             resultVal.text = "${(hour / 2).toInt()} 편 봤다!"
                             flag.text = "영화 한 편 2시간 기준"
                         }
-                        R.drawable.english->{
+                        R.drawable.english ->{
                             resultVal.text = "${(totalMin / 1.3).toInt()} 개 외웠다!"
                             flag.text = "단어 1개 1분20초 기준"
                         }
-                        R.drawable.fog->{
+                        R.drawable.fog ->{
                             resultVal.text = "탄소 ${(totalMin * 3.6).toInt()} g 배출했다!"
                             flag.text = "인터넷 접속 시 1분 3.6g 기준 "
                         }
-                        R.drawable.rocket->{
+                        R.drawable.rocket ->{
                             resultVal.text = "ISS까지 ${(totalMin / 30).toInt()} 번 다녀왔다!"
                             flag.text = "왕복 30분 기준"
                         }
-                        R.drawable.teacher->{
+                        R.drawable.teacher ->{
                             resultVal.text = "2학점짜리 ${(hour / 2).toInt()} 주차 들었다!"
                             flag.text = "전공 2학점 1주 2시간 기준"
                         }
-                        R.drawable.otter->{
+                        R.drawable.otter ->{
                             resultVal.text = "조개 ${(totalMin * 0.5).toInt()}개 까먹었다!"
                             flag.text = "해달 1분 0.5개 섭취 기준"
                         }

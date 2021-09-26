@@ -8,7 +8,7 @@
     android:background="@color/black"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".DetailActivity">
+    tools:context=".activity.DetailActivity">
 
     <ImageView
         android:id="@+id/backBtn"

@@ -17,9 +17,9 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ThreeO">
-        <activity android:name=".TermsOfUesActivity"></activity>
+        <activity android:name=".activity.TermsOfUesActivity"></activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activity.MenuActivity" />
+        <activity android:name=".activity.DetailActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

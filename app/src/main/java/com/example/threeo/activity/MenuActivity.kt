@@ -1,9 +1,7 @@
-package com.example.threeo
+package com.example.threeo.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.threeo.databinding.ActivityMainBinding
 import com.example.threeo.databinding.ActivityMenuBinding
 
 class MenuActivity : AppCompatActivity() {
