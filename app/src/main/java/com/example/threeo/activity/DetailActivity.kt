@@ -123,7 +123,7 @@ class DetailActivity : AppCompatActivity() {
             if(packageStr != "전체시간")
                 iconImg.setImageDrawable(icon)
             else
-                iconImg.setImageResource(R.drawable.photos)
+                iconImg.setImageResource(R.drawable.all_time)
             appTitle.text = appName
 
             val hour = allTime.toLong()/3600000
