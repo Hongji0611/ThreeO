@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.threeo.databinding.ActivitySplashBinding
+import com.example.threeo.sharedPreferences.MyApplication
+import java.time.chrono.HijrahChronology.INSTANCE
 
 
 class SplashActivity : AppCompatActivity() {
@@ -17,12 +19,8 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("isFirst", MODE_PRIVATE)
-        val first = pref.getBoolean("isFirst", false)
+        val first = MyApplication.prefs.getBoolean("isFirst", false)
         if (!first) { //최초 실행시
-            Log.d("Is first Time?", "first")
-            val editor = pref.edit()
-            editor.commit()
             //이용약관 동의 필요
             binding.apply {
                 showTerm.visibility = View.VISIBLE
@@ -35,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
                 }
 
                 termBtn.setOnClickListener {
-                    editor.putBoolean("isFirst", true)
+                    MyApplication.prefs.setBoolean("isFirst", true)
                     val intent = Intent(this@SplashActivity, MainActivity::class.java)
                     startActivity(intent)
                 }

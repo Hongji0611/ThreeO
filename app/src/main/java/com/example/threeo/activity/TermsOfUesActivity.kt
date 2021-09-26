@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.threeo.databinding.ActivityTermsOfUesBinding
+import com.example.threeo.sharedPreferences.MyApplication
 
 class TermsOfUesActivity : AppCompatActivity() {
     lateinit var binding: ActivityTermsOfUesBinding
@@ -14,21 +15,16 @@ class TermsOfUesActivity : AppCompatActivity() {
         binding = ActivityTermsOfUesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("isFirst", MODE_PRIVATE)
-        val first = pref.getBoolean("isFirst", false)
+        val first = MyApplication.prefs.getBoolean("isFirst", false)
         if (!first) { //최초 실행시
-            Log.d("Is first Time?", "first")
-            val editor = pref.edit()
-            editor.commit()
             //이용약관 동의 필요
             binding.apply {
-
                 backBtn.setOnClickListener {
                     onBackPressed()
                 }
 
                 startBtn.setOnClickListener {
-                    editor.putBoolean("isFirst", true)
+                    MyApplication.prefs.setBoolean("isFirst", true)
                     val intent = Intent(this@TermsOfUesActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
