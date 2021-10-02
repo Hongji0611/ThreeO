@@ -70,6 +70,8 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("totalTime", adapter.items[position].time)
                     intent.putExtra("appName", adapter.items[position].appName)
                     intent.putExtra("packageName", adapter.items[position].packageStr)
+                    intent.putExtra("idByANDROID_ID", idByANDROID_ID)
+                    intent.putExtra("findType", findType)
                     startActivity(intent)
                 }
             }

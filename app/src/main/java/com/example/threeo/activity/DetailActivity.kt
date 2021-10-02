@@ -17,9 +17,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threeo.R
+import com.example.threeo.`interface`.TodoApi
 import com.example.threeo.adapter.IfListAdapter
 import com.example.threeo.data.DetailData
 import com.example.threeo.databinding.ActivityDetailBinding
+import com.example.threeo.json.AveData
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
@@ -31,6 +38,9 @@ class DetailActivity : AppCompatActivity() {
     var allTime:String = ""
     var appName:String = ""
     var packageStr:String = ""
+    var idByANDROID_ID:String = ""
+    var findType:Int = -1
+
     lateinit var icon:Drawable
 
     lateinit var adapter: IfListAdapter
@@ -48,6 +58,42 @@ class DetailActivity : AppCompatActivity() {
         allTime = intent.getStringExtra("totalTime").toString()
         appName = intent.getStringExtra("appName").toString()
         packageStr = intent.getStringExtra("packageName").toString()
+        idByANDROID_ID = intent.getStringExtra("idByANDROID_ID").toString()
+        findType = intent.getIntExtra("findType", -1)
+
+
+        //다른 사용자들 평균
+        //Retrofit 객체 생성
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://wouldhavedone-back.herokuapp.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        //retrofit 객체를 통해 인터페이스 생성
+        val service = retrofit.create(TodoApi::class.java)
+        val callOtherUseAverage = service.otherUseAverage(idByANDROID_ID, findType, appName)
+        callOtherUseAverage.enqueue(object: Callback<AveData>{
+            override fun onResponse(call: Call<AveData>, response: Response<AveData>) {
+                if(response.isSuccessful){
+                    Log.e("otherUseAverage", "성공 ${response.body()!!.result}")
+                    Log.e("otherUseAverage", "성공 ${response}")
+                    val allTime = response.body()!!.result
+                    val hour = allTime/3600000
+                    val min = allTime/60000 - hour*60
+                    Log.e("값 확인", "${hour}시간 ${min}분")
+                    binding.otherAverage.text = "${hour}시간 ${min}분"
+
+                }else{
+                    Log.e("otherUseAverage", "code == 400")
+                }
+            }
+
+            override fun onFailure(call: Call<AveData>, t: Throwable) {
+                Log.e("otherUseAverage", "실패 : $t")
+            }
+        })
+
+
         if(packageStr != "전체시간")
             icon = this.packageManager.getApplicationIcon(packageStr)
         else
