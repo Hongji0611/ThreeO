@@ -71,7 +71,12 @@ class DetailActivity : AppCompatActivity() {
 
         //retrofit 객체를 통해 인터페이스 생성
         val service = retrofit.create(TodoApi::class.java)
-        val callOtherUseAverage = service.otherUseAverage(idByANDROID_ID, findType, appName)
+        lateinit var callOtherUseAverage:Call<AveData>
+        if(packageStr != "전체시간")
+            callOtherUseAverage = service.otherUseAverage(idByANDROID_ID, findType, appName)
+        else
+            callOtherUseAverage = service.otherUseAverage(idByANDROID_ID, findType, packageStr)
+
         callOtherUseAverage.enqueue(object: Callback<AveData>{
             override fun onResponse(call: Call<AveData>, response: Response<AveData>) {
                 if(response.isSuccessful){

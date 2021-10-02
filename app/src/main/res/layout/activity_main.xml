@@ -134,13 +134,6 @@
                     android:textColor="@color/gray_F3"
                     android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/difference"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:text="39분 감소"
-                    android:textColor="@color/purple" />
             </LinearLayout>
 
         </LinearLayout>

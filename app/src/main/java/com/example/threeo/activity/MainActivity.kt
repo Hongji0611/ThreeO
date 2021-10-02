@@ -145,6 +145,7 @@ class MainActivity : AppCompatActivity() {
         //Body에 담을 데이터 생성
         val adapter_data = adapter.getData()
         var appList = ArrayList<AppData>()
+        appList.add(AppData("전체시간", calculateTime)) //전체시간
         for(app in adapter_data){
             appList.add(AppData(app.appName, app.time.toLong()))
         }
