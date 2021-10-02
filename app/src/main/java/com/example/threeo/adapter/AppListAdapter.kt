@@ -39,6 +39,12 @@ class AppListAdapter (var items:ArrayList<TimeData>)
         return items
     }
 
+    fun deDuplication(){
+        var distList = items.distinct()
+        items.clear()
+        items.addAll(distList)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = RowListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)

@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     //화면 생성시 초기화
     private fun init(){
         idByANDROID_ID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
-        Log.e("idByANDROID_ID: ", idByANDROID_ID)
+//        Log.e("idByANDROID_ID: ", idByANDROID_ID)
 
         binding.apply {
             //list를 관리하는 메니저 등록
@@ -203,6 +203,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.allTime.text = "${calculateTime/3600000}시간 ${(calculateTime%3600000)/60000}분"
+
+        adapter.deDuplication()
     }
 
     //앱 정보 가져올 때 주기 설정
