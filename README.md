@@ -21,22 +21,13 @@
 
 ## 화면구성 및 기능
 ### Splash 및 이용약관 화면
-![image](https://user-images.githubusercontent.com/63103070/135752391-d6722291-4d2c-44cb-a84f-887e93cf6f87.png)  
-![image](https://user-images.githubusercontent.com/63103070/135752404-81e13106-5497-4c78-9238-2727ebaec4c5.png)  
-![image](https://user-images.githubusercontent.com/63103070/135752416-8b80457f-c76d-4521-a1be-4b31e3a6e7cf.png)  
+![image](https://user-images.githubusercontent.com/63103070/135752647-7fd8d4f8-f786-4009-bfdf-1bd0db649ace.png)  
 
-### 사용시간 리스트 화면
-![image](https://user-images.githubusercontent.com/63103070/135752427-aab87704-298e-452b-ab0d-70f23b481782.png)  
-
-### 상세화면
-![image](https://user-images.githubusercontent.com/63103070/135752433-f188cf5f-f396-4316-a385-1fd1cba2bdab.png)  
+### 사용시간 리스트 및 상세화면
+![image](https://user-images.githubusercontent.com/63103070/135752677-9aa96905-209d-40cc-9e94-538c89af2c06.png)    
 
 ### 사용시간 공유 화면
-![image](https://user-images.githubusercontent.com/63103070/135752451-31484f01-6129-44e5-b076-fc0e959d3362.png)  
-![image](https://user-images.githubusercontent.com/63103070/135752459-83bb9107-15ae-469b-9deb-626310fb874a.png)  
-
-### 설정 화면
-![image](https://user-images.githubusercontent.com/63103070/135752481-31a4624f-38ff-4fa9-b2a2-ff633e73e53b.png)  
+![image](https://user-images.githubusercontent.com/63103070/135752723-9b25ac57-c57a-4e34-9735-967164f55f5b.png)  
 
 ## 데모 영상
 https://drive.google.com/file/d/1FHU0uuH6vICeM0GBCk7qhjAez3YFyB2P/view?usp=sharing  
