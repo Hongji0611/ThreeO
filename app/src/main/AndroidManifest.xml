@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.threeo">
 
+    <queries>
+        <package android:name="com.google.android.apps.nexuslauncher"/>
+    </queries>
+
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -18,8 +22,9 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ThreeO">
-        <activity android:name=".activity.TermsOfUesActivity"></activity>
+        <activity android:name=".activity.TermsOfUesActivity"/>
         <activity
+            android:exported="true"
             android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>

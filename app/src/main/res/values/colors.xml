@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FFA1A4AF</color>
     <color name="gray_F3">#FFF3F3F3</color>
-    <color name="purple">#FFAA76FF</color>
+    <color name="purple">#FFBB92FF</color>
+    <color name="purple2">#FFAA76FF</color>
     <color name="dark_gray">#FF38393A</color>
 </resources>

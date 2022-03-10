@@ -6,6 +6,7 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Process
@@ -14,52 +15,72 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threeo.R
-import com.example.threeo.`interface`.TodoApi
 import com.example.threeo.adapter.AppListAdapter
+import com.example.threeo.adapter.IfListAdapter
+import com.example.threeo.data.DetailData
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityMainBinding
-import com.example.threeo.json.AppData
-import com.example.threeo.json.PostData
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
-    lateinit var adapter: AppListAdapter
-    var array = ArrayList<TimeData>()
+    private lateinit var appAdapter: AppListAdapter
+    private lateinit var metaphorAdapter: IfListAdapter
 
-    var findType = 0
-    var calculateTime:Long = 0L
-    var idByANDROID_ID = ""
+    private val standardText = arrayOf("한 권당 6시간 기준",
+        "달리기 1분 9.6kcal 기준",
+        "은줄팔랑나비 1분 500회 기준",
+        "1곡 3분 기준",
+        "시급 8720원 기준",
+        "바다거북 35km/h 기준",
+        "영화 한 편 2시간 기준",
+        "단어 1개 1분20초 기준",
+        "인터넷 접속 시 1분 3.6g 기준 ",
+        "왕복 30분 기준",
+        "전공 2학점 1주 2시간 기준",
+        "해달 1분 0.5개 섭취 기준",
+    )
 
-    //xml파일과 코틀린 파일을 연결
+    private var dateType = false
+    private var standardType = 0
+
+    private var allTime:Long = 0L
+    private var userId = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         init()
-        getList()
     }
 
     //화면 생성시 초기화
     private fun init(){
-        idByANDROID_ID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
-//        Log.e("idByANDROID_ID: ", idByANDROID_ID)
-
         binding.apply {
-            //list를 관리하는 메니저 등록
-            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL,false)
-            adapter = AppListAdapter(array)
-            adapter.itemClickListener = object :AppListAdapter.OnItemClickListener{
+            //Metaphor list 매니저 등록
+            metaphorAdapter = IfListAdapter(setMetaphorList())
+            metaphorAdapter.itemClickListener = object : IfListAdapter.OnItemClickListener{
+                override fun OnItemClick(
+                    holder: IfListAdapter.MyViewHolder,
+                    view: View,
+                    data: DetailData,
+                    position: Int
+                ) {
+                    standard.text = standardText[position]
+                    standardType = position
+                    metaphorAdapter.settingPushBtn(position)
+                }
+            }
+            metaphorRecyclerView.adapter = metaphorAdapter
+
+            //app List 매니저 등록
+            appAdapter = AppListAdapter(arrayListOf())
+            appAdapter.itemClickListener = object :AppListAdapter.OnItemClickListener{
                 override fun OnItemClick(
                     holder: AppListAdapter.MyViewHolder,
                     view: View,
@@ -67,103 +88,47 @@ class MainActivity : AppCompatActivity() {
                     position: Int
                 ) {
                     val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                    intent.putExtra("totalTime", adapter.items[position].time)
-                    intent.putExtra("appName", adapter.items[position].appName)
-                    intent.putExtra("packageName", adapter.items[position].packageStr)
-                    intent.putExtra("idByANDROID_ID", idByANDROID_ID)
-                    intent.putExtra("findType", findType)
                     startActivity(intent)
                 }
             }
-            recyclerView.adapter = adapter
+            appRecyclerView.adapter = appAdapter
 
             //버튼 이벤트 추가
             menu.setOnClickListener {
                 val intent = Intent(this@MainActivity, MenuActivity::class.java)
                 startActivityForResult (intent, 100)
             }
-            day.setOnClickListener {
-                findType = 1
-                day.setBackgroundResource(R.drawable.push_box)
+
+            today.setOnClickListener {
+                dateType = false
+                today.setBackgroundResource(R.drawable.push_box)
                 week.setBackgroundResource(R.drawable.fill_box)
-                month.setBackgroundResource(R.drawable.fill_box)
-                year.setBackgroundResource(R.drawable.fill_box)
                 getList()
-                postList(findType)
             }
 
             week.setOnClickListener {
-                findType = 2
-                day.setBackgroundResource(R.drawable.fill_box)
+                dateType = true
+                today.setBackgroundResource(R.drawable.fill_box)
                 week.setBackgroundResource(R.drawable.push_box)
-                month.setBackgroundResource(R.drawable.fill_box)
-                year.setBackgroundResource(R.drawable.fill_box)
                 getList()
-                postList(findType)
-            }
-
-            month.setOnClickListener {
-                day.setBackgroundResource(R.drawable.fill_box)
-                week.setBackgroundResource(R.drawable.fill_box)
-                month.setBackgroundResource(R.drawable.push_box)
-                year.setBackgroundResource(R.drawable.fill_box)
-                findType = 3
-                getList()
-                postList(findType)
-            }
-
-            year.setOnClickListener {
-                day.setBackgroundResource(R.drawable.fill_box)
-                week.setBackgroundResource(R.drawable.fill_box)
-                month.setBackgroundResource(R.drawable.fill_box)
-                year.setBackgroundResource(R.drawable.push_box)
-                findType = 4
-                getList()
-                postList(findType)
-            }
-
-            show.setOnClickListener {
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra("totalTime", calculateTime.toString())
-                intent.putExtra("appName", "나의 총 휴대폰 사용 시간")
-                intent.putExtra("packageName", "전체시간")
-                startActivity(intent)
             }
         }
     }
 
-    private fun postList(period:Int){
-        //Retrofit 객체 생성
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://wouldhavedone-back.herokuapp.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        //retrofit 객체를 통해 인터페이스 생성
-        val service = retrofit.create(TodoApi::class.java)
-
-        //Body에 담을 데이터 생성
-        val adapter_data = adapter.getData()
-        var appList = ArrayList<AppData>()
-        appList.add(AppData("전체시간", calculateTime)) //전체시간
-        for(app in adapter_data){
-            appList.add(AppData(app.appName, app.time.toLong()))
-        }
-
-        val now = Date().time
-        var body = PostData(idByANDROID_ID, period, now, appList)
-
-        service.postData(body).enqueue(object : Callback<String>{
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.d("Response:: ", response.body().toString())
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("CometChatAPI::", "Failed API call with call: " + call +
-                        " + exception: " + t)
-            }
-
-        })
+    private fun setMetaphorList(): ArrayList<DetailData> {
+        return arrayListOf<DetailData>(
+            DetailData(0, R.drawable.book, true),
+            DetailData(1, R.drawable.run),
+            DetailData(2, R.drawable.butterfly),
+            DetailData(3, R.drawable.music),
+            DetailData(4, R.drawable.money),
+            DetailData(5, R.drawable.turtle),
+            DetailData(6, R.drawable.movie),
+            DetailData(7, R.drawable.english),
+            DetailData(8, R.drawable.fog),
+            DetailData(9, R.drawable.teacher),
+            DetailData(10, R.drawable.otter)
+        )
     }
 
     private fun getList(){
@@ -176,7 +141,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }else{
             //스크린 타임 리스트 가져오기
-            adapter.clearData()
             val usageStats: MutableList<UsageStats> = getAppUsageStats()
             showAppUsageStats(usageStats)
         }
@@ -187,24 +151,43 @@ class MainActivity : AppCompatActivity() {
         usageStats.sortWith(Comparator { right, left ->
             compareValues(left.lastTimeUsed, right.lastTimeUsed)
         })
-        calculateTime = 0L
 
+        allTime = 0L
         var count = 0
+        var arrayList = arrayListOf<TimeData>()
+
         usageStats.forEach {
-            val icon: Drawable = this.packageManager.getApplicationIcon(it.packageName)
-            val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
-            val appname = p.applicationInfo.loadLabel(packageManager).toString()
-            if(count <10 && it.totalTimeInForeground.toString() != "0" && icon.toString() != "android.graphics.drawable.AdaptiveIconDrawable@eedfade"){
-                Log.e("ThreeO", "패키지명: ${it.packageName}, 이미지명: $icon lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
-                        "totalTimeInForeground: ${it.totalTimeInForeground}")
-                adapter.addData(TimeData(icon, appname, (it.totalTimeInForeground).toString(), it.packageName))
-                calculateTime += it.totalTimeInForeground
-                count++
+            try {
+                val icon: Drawable = this.packageManager.getApplicationIcon(it.packageName)
+                val p: PackageInfo = this.packageManager.getPackageInfo(it.packageName, 0)
+                val appname = p.applicationInfo.loadLabel(packageManager).toString()
+                if (count < 10 && it.totalTimeInForeground.toString() != "0" && icon.toString() != "android.graphics.drawable.AdaptiveIconDrawable@eedfade") {
+                    Log.e(
+                        "ThreeO",
+                        "패키지명: ${it.packageName}, 이미지명: $icon lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
+                                "totalTimeInForeground: ${it.totalTimeInForeground}"
+                    )
+                    arrayList.add(
+                        TimeData(
+                            icon,
+                            appname,
+                            (it.totalTimeInForeground).toString(),
+                            it.packageName
+                        )
+                    )
+                    allTime += it.totalTimeInForeground
+                    count++
+                }
+            } catch (e : PackageManager.NameNotFoundException){
+                Log.e(
+                    "ThreeO",
+                    "패키지명: ${it.packageName} totalTimeInForeground: ${it.totalTimeInForeground}")
             }
         }
-        binding.allTime.text = "${calculateTime/3600000}시간 ${(calculateTime%3600000)/60000}분"
 
-        adapter.deDuplication()
+        appAdapter.setData(arrayList)
+        binding.usage.text = "${allTime/3600000}시간 ${(allTime%3600000)/60000}분"
+
     }
 
     //앱 정보 가져올 때 주기 설정
@@ -213,33 +196,21 @@ class MainActivity : AppCompatActivity() {
         cal.add(Calendar.YEAR, -1)
 
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        return when(findType){
-            1-> {
+        return when(dateType){
+            false-> {
                 usageStatsManager
                     .queryUsageStats(
                         UsageStatsManager.INTERVAL_DAILY, cal.timeInMillis,
                         System.currentTimeMillis()
                     )
             }
-            2-> {
+            true-> {
                 usageStatsManager
                     .queryUsageStats(
                         UsageStatsManager.INTERVAL_WEEKLY, cal.timeInMillis,
                         System.currentTimeMillis()
                     )
             }
-            3->{
-                usageStatsManager
-                    .queryUsageStats(
-                        UsageStatsManager.INTERVAL_MONTHLY, cal.timeInMillis,
-                        System.currentTimeMillis()
-                    )
-            }
-            else -> usageStatsManager
-                .queryUsageStats(
-                    UsageStatsManager.INTERVAL_YEARLY, cal.timeInMillis,
-                    System.currentTimeMillis()
-                )
         }
     }
 

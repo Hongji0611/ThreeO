@@ -25,24 +25,10 @@ class AppListAdapter (var items:ArrayList<TimeData>)
         }
     }
 
-    fun clearData(){
+    fun setData(newData: ArrayList<TimeData>){
         items.clear()
+        items.addAll(newData)
         notifyDataSetChanged()
-    }
-
-    fun addData(data: TimeData){
-        items.add(data)
-        notifyDataSetChanged()
-    }
-
-    fun getData(): ArrayList<TimeData>{
-        return items
-    }
-
-    fun deDuplication(){
-        var distList = items.distinct()
-        items.clear()
-        items.addAll(distList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
