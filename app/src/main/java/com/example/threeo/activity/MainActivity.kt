@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.threeo.R
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.adapter.IfListAdapter
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     standard.text = standardText[position]
                     standardType = position
+                    appAdapter.setStandardType(position)
                     metaphorAdapter.settingPushBtn(position)
                 }
             }
@@ -102,14 +104,18 @@ class MainActivity : AppCompatActivity() {
             today.setOnClickListener {
                 dateType = false
                 today.setBackgroundResource(R.drawable.push_box)
+                today.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
                 week.setBackgroundResource(R.drawable.fill_box)
+                week.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.gray))
                 getList()
             }
 
             week.setOnClickListener {
                 dateType = true
                 today.setBackgroundResource(R.drawable.fill_box)
+                today.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.gray))
                 week.setBackgroundResource(R.drawable.push_box)
+                week.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
                 getList()
             }
         }
