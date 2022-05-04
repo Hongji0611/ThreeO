@@ -5,6 +5,10 @@
 
     <queries>
         <package android:name="com.google.android.apps.nexuslauncher"/>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+        </intent>
+        <provider android:authorities="com.example.settings.files" />
     </queries>
 
     <uses-permission

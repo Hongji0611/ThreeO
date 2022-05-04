@@ -16,6 +16,14 @@
         android:contentDescription="img"
         app:srcCompat="@drawable/all_time" />
 
+    <ImageView
+        android:id="@+id/isAlarmImg"
+        android:layout_width="10dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/alarm" />
+
     <TextView
         android:id="@+id/appName"
         android:layout_width="0dp"

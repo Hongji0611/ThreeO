@@ -6,15 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.threeo.R
 import com.example.threeo.data.DetailData
+import com.example.threeo.data.IfData
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ColListBinding
 import com.example.threeo.databinding.RowListBinding
 
-class IfListAdapter (var items:ArrayList<DetailData>)
+class IfListAdapter (var items:ArrayList<IfData>)
     : RecyclerView.Adapter<IfListAdapter.MyViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnItemClick(holder: MyViewHolder, view: View, data: DetailData, position: Int)
+        fun OnItemClick(holder: MyViewHolder, view: View, data: IfData, position: Int)
     }
 
     var itemClickListener:OnItemClickListener?= null

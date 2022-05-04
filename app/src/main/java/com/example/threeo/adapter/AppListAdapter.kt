@@ -37,6 +37,31 @@ class AppListAdapter (var items:ArrayList<TimeData>)
         notifyDataSetChanged()
     }
 
+    fun getCustomTime(time: Long):Int{
+        val hour = time/3600000
+        val min = time/60000 - hour*60
+        val totalMin = (hour*60 + min)
+
+        var returnTime = 0
+
+        when(standardType){
+            0-> returnTime = (hour / 6).toInt()
+            1-> returnTime = (totalMin * 9.6).toInt()
+            2-> returnTime = (totalMin / 500).toInt()
+            3-> returnTime = (totalMin / 3).toInt()
+            4-> returnTime = (hour * 8720).toInt()
+            5-> returnTime = (hour / 35).toInt()
+            6-> returnTime = (hour / 2).toInt()
+            7-> returnTime = (totalMin / 1.3).toInt()
+            8-> returnTime = (totalMin * 3.6).toInt()
+            9-> returnTime = (totalMin / 30).toInt()
+            10-> returnTime = (hour / 2).toInt()
+            11-> returnTime = (totalMin * 0.5).toInt()
+        }
+
+        return returnTime
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = RowListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)
@@ -69,6 +94,11 @@ class AppListAdapter (var items:ArrayList<TimeData>)
                 10-> allTime.text = "${(hour / 2).toInt()}주차"
                 11-> allTime.text = "${(totalMin * 0.5).toInt()}개"
             }
+
+            if(items[position].isAlarm)
+                isAlarmImg.visibility = View.VISIBLE
+            else
+                isAlarmImg.visibility = View.GONE
         }
     }
 }

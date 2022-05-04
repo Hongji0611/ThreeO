@@ -20,6 +20,7 @@ import com.example.threeo.R
 import com.example.threeo.adapter.AppListAdapter
 import com.example.threeo.adapter.IfListAdapter
 import com.example.threeo.data.DetailData
+import com.example.threeo.data.IfData
 import com.example.threeo.data.TimeData
 import com.example.threeo.databinding.ActivityMainBinding
 import java.util.*
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appAdapter: AppListAdapter
     private lateinit var metaphorAdapter: IfListAdapter
 
-    private val standardText = arrayOf("한 권당 6시간 기준",
+    private val standardText = arrayOf(
+        "한 권당 6시간 기준",
         "달리기 1분 9.6kcal 기준",
         "은줄팔랑나비 1분 500회 기준",
         "1곡 3분 기준",
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private var dateType = false
     private var standardType = 0
 
-    private var allTime:Long = 0L
+    private var allTime: Long = 0L
     private var userId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,15 +63,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     //화면 생성시 초기화
-    private fun init(){
+    private fun init() {
         binding.apply {
             //Metaphor list 매니저 등록
             metaphorAdapter = IfListAdapter(setMetaphorList())
-            metaphorAdapter.itemClickListener = object : IfListAdapter.OnItemClickListener{
+            metaphorAdapter.itemClickListener = object : IfListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: IfListAdapter.MyViewHolder,
                     view: View,
-                    data: DetailData,
+                    data: IfData,
                     position: Int
                 ) {
                     standard.text = standardText[position]
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
             //app List 매니저 등록
             appAdapter = AppListAdapter(arrayListOf())
-            appAdapter.itemClickListener = object :AppListAdapter.OnItemClickListener{
+            appAdapter.itemClickListener = object : AppListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: AppListAdapter.MyViewHolder,
                     view: View,
@@ -90,6 +92,16 @@ class MainActivity : AppCompatActivity() {
                     position: Int
                 ) {
                     val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                    intent.putExtra(
+                        "detailData",
+                        DetailData(
+                            realTime = data.time.toLong(),
+                            customTime = appAdapter.getCustomTime(data.time.toLong()),
+                            appName = data.appName,
+                            packageName = data.packageStr,
+                            dateType = dateType,
+                            standardType = standardType,
+                        ))
                     startActivity(intent)
                 }
             }
@@ -98,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             //버튼 이벤트 추가
             menu.setOnClickListener {
                 val intent = Intent(this@MainActivity, MenuActivity::class.java)
-                startActivityForResult (intent, 100)
+                startActivityForResult(intent, 100)
             }
 
             today.setOnClickListener {
@@ -121,31 +133,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setMetaphorList(): ArrayList<DetailData> {
-        return arrayListOf<DetailData>(
-            DetailData(0, R.drawable.book, true),
-            DetailData(1, R.drawable.run),
-            DetailData(2, R.drawable.butterfly),
-            DetailData(3, R.drawable.music),
-            DetailData(4, R.drawable.money),
-            DetailData(5, R.drawable.turtle),
-            DetailData(6, R.drawable.movie),
-            DetailData(7, R.drawable.english),
-            DetailData(8, R.drawable.fog),
-            DetailData(9, R.drawable.teacher),
-            DetailData(10, R.drawable.otter)
+    private fun setMetaphorList(): ArrayList<IfData> {
+        return arrayListOf<IfData>(
+            IfData(0, R.drawable.book, true),
+            IfData(1, R.drawable.run),
+            IfData(2, R.drawable.butterfly),
+            IfData(3, R.drawable.music),
+            IfData(4, R.drawable.money),
+            IfData(5, R.drawable.turtle),
+            IfData(6, R.drawable.movie),
+            IfData(7, R.drawable.english),
+            IfData(8, R.drawable.fog),
+            IfData(9, R.drawable.teacher),
+            IfData(10, R.drawable.otter)
         )
     }
 
-    private fun getList(){
+    private fun getList() {
         //스크린 타임 권한 요청
-        if(!checkForPermission()) {
+        if (!checkForPermission()) {
             Toast.makeText(
                 this@MainActivity, "권한 설정이 필요합니다.",
                 Toast.LENGTH_LONG
             ).show()
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-        }else{
+        } else {
             //스크린 타임 리스트 가져오기
             val usageStats: MutableList<UsageStats> = getAppUsageStats()
             showAppUsageStats(usageStats)
@@ -184,33 +196,35 @@ class MainActivity : AppCompatActivity() {
                     allTime += it.totalTimeInForeground
                     count++
                 }
-            } catch (e : PackageManager.NameNotFoundException){
+            } catch (e: PackageManager.NameNotFoundException) {
                 Log.e(
                     "ThreeO",
-                    "패키지명: ${it.packageName} totalTimeInForeground: ${it.totalTimeInForeground}")
+                    "패키지명: ${it.packageName} totalTimeInForeground: ${it.totalTimeInForeground}"
+                )
             }
         }
 
         appAdapter.setData(arrayList)
-        binding.usage.text = "${allTime/3600000}시간 ${(allTime%3600000)/60000}분"
+        binding.usage.text = "${allTime / 3600000}시간 ${(allTime % 3600000) / 60000}분"
 
     }
 
     //앱 정보 가져올 때 주기 설정
     private fun getAppUsageStats(): MutableList<UsageStats> {
-        val cal = Calendar.getInstance()
-        cal.add(Calendar.YEAR, -1)
-
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        return when(dateType){
-            false-> {
+        return when (dateType) {
+            false -> {
+                val cal = Calendar.getInstance()
+                cal.add(Calendar.DATE, -1)
                 usageStatsManager
                     .queryUsageStats(
                         UsageStatsManager.INTERVAL_DAILY, cal.timeInMillis,
                         System.currentTimeMillis()
                     )
             }
-            true-> {
+            true -> {
+                val cal = Calendar.getInstance()
+                cal.add(Calendar.DATE, -7)
                 usageStatsManager
                     .queryUsageStats(
                         UsageStatsManager.INTERVAL_WEEKLY, cal.timeInMillis,
@@ -223,7 +237,8 @@ class MainActivity : AppCompatActivity() {
     //권한 확인
     private fun checkForPermission(): Boolean {
         val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+        val mode =
+            appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
         return mode == AppOpsManager.MODE_ALLOWED
     }
 }
