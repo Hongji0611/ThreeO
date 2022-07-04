@@ -30,4 +30,4 @@
 ![image](https://user-images.githubusercontent.com/63103070/135752723-9b25ac57-c57a-4e34-9735-967164f55f5b.png)  
 
 ## 데모 영상
-https://drive.google.com/file/d/1FHU0uuH6vICeM0GBCk7qhjAez3YFyB2P/view?usp=sharing  
+https://www.youtube.com/watch?v=TDQuz9Fg3DM
